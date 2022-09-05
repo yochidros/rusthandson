@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>kakeibo summary</title>
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['品目', '値段'],
+        {% for summary in summaries -%}
+                ['{{ summary.category }}', {{ summary.sum }}],
+        {% endfor %}
+        ]);
+
+        var options = { title: '割合' };
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        chart.draw(data, options);
+      }
+    </script>
+  </head>
+  <body>
+    {% let len = 10 %}
+    <h1>集計</h1>
+    {% if summaries.len() != 0 -%}
+      <div id="piechart" style="width: 400px; height: 300px;"></div>
+      <table border="1">
+        <tr><th>category</th><th>sum</th><th>avg</th></tr>
+        {% for summary in summaries -%}
+        <tr><td>{{ summary.category }}</td><td>{{ summary.sum }}円</td><td>{{ summary.avg() }}円</td></tr>
+        {% endfor %}
+      </table>
+    {% else -%}
+      <p >No Data</p>
+    {% endif -%}
+    <div style="margin: 12px;">
+      <a href="/">戻る</a>
+    </div>
+  </body>
+</html>

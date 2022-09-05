@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>kakeibo</title>
+  </head>
+  <body>
+    {% let len = 10 %}
+    <h1>家計簿</h1>
+    <h2>input</h2>
+    <form method="post" action="/save">
+      <label for="category">category</label>
+      <input name="category" type="text">
+      <label for="price">price</label>
+      <input name="price" type="number">
+      <input type="submit" value="save">
+    </form>
+    <h2>最新{{ items.len() }}件 <a href="/summary">summary</a></h2>
+    {% if items.len() != 0 -%}
+    <table border="1">
+      <tr><th>category</th><th>price</th></tr>
+      {% for item in items -%}
+      <tr><td>{{ item.category }}</td><td>{{ item.price }}円</td></tr>
+      {% endfor %}
+    </table>
+    {% else -%}
+    <p>データがありません</p>
+    {% endif -%}
+  </body>
+</html>
